@@ -16,7 +16,7 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Adjustments
 
         protected override Boolean OnLoad()
         {
-            _debouncer = new AdjustmentDebouncer<Double>(this.FlushTemperature, 200);
+            _debouncer = new AdjustmentDebouncer<Double>(this.FlushTemperature, 350);
             this.Plugin.HaStatesLoaded += this.OnStatesLoaded;
             this.Plugin.EntityStateChanged += this.OnEntityStateChanged;
             return true;

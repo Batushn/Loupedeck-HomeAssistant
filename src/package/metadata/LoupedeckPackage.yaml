@@ -2,7 +2,7 @@ type: plugin4
 name: HomeAssistantByBatu
 displayName: Home Assistant by Batu
 description: Control your Home Assistant devices from your Loupedeck/Razer Stream Controller.
-version: 1.2.0
+version: 1.3.1
 author: Batuhan Sahin
 copyright: Copyright (c) 2026 Batuhan Sahin
 

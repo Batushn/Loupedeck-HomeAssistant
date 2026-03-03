@@ -16,7 +16,7 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Adjustments
 
         protected override Boolean OnLoad()
         {
-            _debouncer = new AdjustmentDebouncer<Int32>(this.FlushBrightness, 120);
+            _debouncer = new AdjustmentDebouncer<Int32>(this.FlushBrightness, 350);
             this.Plugin.HaStatesLoaded += this.OnStatesLoaded;
             this.Plugin.EntityStateChanged += this.OnEntityStateChanged;
             return true;
@@ -138,21 +138,22 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Adjustments
                 return IconHelper.CreateOfflineImage(imageSize);
             }
 
-            String valueText;
+            Int32 pct;
             Boolean isOn;
 
             if (_debouncer != null && _debouncer.TryGetPending(actionParameter, out var pending))
             {
+                pct = pending;
                 isOn = pending > 0;
-                valueText = pending <= 0 ? "OFF" : $"{pending}%";
             }
             else
             {
+                pct = entity.GetBrightnessPercent();
                 isOn = entity.IsOn;
-                valueText = isOn ? $"{entity.GetBrightnessPercent()}%" : "OFF";
             }
 
-            return IconHelper.CreateAdjustmentImage(imageSize, entity.FriendlyName, valueText, isOn);
+            var valueText = isOn ? $"{pct}%" : "OFF";
+            return IconHelper.CreateAdjustmentImage(imageSize, entity.FriendlyName, valueText, isOn, pct);
         }
 
         private void OnEntityStateChanged(Object sender, HaStateChangedEventArgs e)

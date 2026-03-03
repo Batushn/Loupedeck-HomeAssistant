@@ -16,7 +16,7 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Adjustments
 
         protected override Boolean OnLoad()
         {
-            _debouncer = new AdjustmentDebouncer<Int32>(this.FlushColorTemp, 120);
+            _debouncer = new AdjustmentDebouncer<Int32>(this.FlushColorTemp, 350);
             this.Plugin.HaStatesLoaded += this.OnStatesLoaded;
             this.Plugin.EntityStateChanged += this.OnEntityStateChanged;
             return true;
@@ -137,9 +137,10 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Adjustments
 
             var isOn = entity.IsOn;
             var valueText = isOn ? FormatColorTemp(actionParameter, entity) : "OFF";
+            var brightnessPct = isOn ? entity.GetBrightnessPercent() : 0;
 
             return IconHelper.CreateColorTempImage(imageSize, entity.FriendlyName, valueText, isOn,
-                GetWarmthFactor(actionParameter, entity));
+                GetWarmthFactor(actionParameter, entity), brightnessPct);
         }
 
         private String FormatColorTemp(String entityId, HaEntity entity)

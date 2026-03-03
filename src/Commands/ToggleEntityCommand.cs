@@ -88,9 +88,21 @@ namespace Loupedeck.HomeAssistantByBatuPlugin.Commands
             }
 
             var icon = IconHelper.GetDomainIcon(entity.Domain);
-            var stateText = entity.IsOn ? "ON" : "OFF";
 
-            return IconHelper.CreateEntityImage(imageSize, entity.FriendlyName, stateText, entity.IsOn, icon);
+            var brightnessPct = -1;
+            String stateText;
+
+            if (entity.Domain == "light" && entity.IsOn)
+            {
+                brightnessPct = entity.GetBrightnessPercent();
+                stateText = brightnessPct > 0 ? $"{brightnessPct}%" : "ON";
+            }
+            else
+            {
+                stateText = entity.IsOn ? "ON" : "OFF";
+            }
+
+            return IconHelper.CreateEntityImage(imageSize, entity.FriendlyName, stateText, entity.IsOn, icon, brightnessPct);
         }
 
         private void OnEntityStateChanged(Object sender, HaStateChangedEventArgs e)
