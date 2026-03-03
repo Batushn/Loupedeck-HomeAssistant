@@ -71,8 +71,10 @@
     <ItemGroup>
       <PluginBinaries Include="$(OutputPath)*.dll" />
       <PluginBinaries Include="$(OutputPath)*.json" />
+      <FallbackDeps Include="$(MSBuildThisFileDirectory)..\lib\deps\*.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginBinaries)" DestinationFolder="$(PackageStagingDir)bin\" />
+    <Copy SourceFiles="@(FallbackDeps)" DestinationFolder="$(PackageStagingDir)bin\" SkipUnchangedFiles="true" Condition="@(FallbackDeps) != ''" />
 
     <MakeDir Directories="$(PackageOutputDir)" />
 
